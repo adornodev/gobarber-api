@@ -1,5 +1,5 @@
-import app from './app';
 import 'dotenv/config';
+import app from './app';
 
 // Resgatando as variáveis de env
 const port = process.env.API_PORT;
