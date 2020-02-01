@@ -1,5 +1,6 @@
 import { format, isBefore, parseISO, startOfHour, subHours } from 'date-fns';
 import pt from 'date-fns/locale/pt';
+import 'express-async-errors';
 import * as Yup from 'yup';
 import Queue from '../../lib/Queue';
 import CancellationMail from '../jobs/CancellationMail';

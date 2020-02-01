@@ -7,6 +7,7 @@ import {
   setSeconds,
   startOfDay,
 } from 'date-fns';
+import 'express-async-errors';
 import { Op } from 'sequelize';
 import Appointment from '../models/Appointment';
 
