@@ -17,8 +17,8 @@ class AppointmentController {
         user_id: req.userID,
         canceled_at: null,
       },
-      attributes: ['id', 'date', 'canceled_at'],
       order: ['date'],
+      attributes: ['id', 'date', 'canceled_at'],
       include: [
         {
           model: User,

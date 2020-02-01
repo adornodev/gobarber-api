@@ -26,7 +26,8 @@ class NotificationController {
   }
 
   async update(req, res) {
-    const notifications = await NotificationSchema.findByIdAndUpdate(
+    // o new: true informa que depois de atualizar, ele retorna e não retorna antes de atualizar.
+    const notification = await NotificationSchema.findByIdAndUpdate(
       req.params.id,
       {
         read: true,
@@ -34,7 +35,7 @@ class NotificationController {
       { new: true }
     );
 
-    return res.json(notifications);
+    return res.json(notification);
   }
 }
 
