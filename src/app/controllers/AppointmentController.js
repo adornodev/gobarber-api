@@ -1,7 +1,7 @@
 import { format, isBefore, parseISO, startOfHour, subHours } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import * as Yup from 'yup';
-// import Mail from '../../lib/Mail';
+import Mail from '../../lib/Mail';
 import Appointment from '../models/Appointment';
 import File from '../models/File';
 import User from '../models/User';
@@ -126,7 +126,7 @@ class AppointmentController {
   }
 
   async delete(req, res) {
-    const appointments = await Appointment.findByPk(req.params.id, {
+    const appointment = await Appointment.findByPk(req.params.id, {
       include: [
         {
           model: User,
@@ -136,13 +136,19 @@ class AppointmentController {
       ],
     });
 
-    if (appointments.user_id !== req.userID) {
+    if (!appointment) {
+      return res.status(401).json({
+        error: 'Não há agendamento para ser deletado!',
+      });
+    }
+
+    if (appointment.user_id !== req.userID) {
       return res.status(401).json({
         error: 'Você não tem permissão para cancelar este agendamento',
       });
     }
 
-    const dateWithSub = subHours(appointments.date, 2);
+    const dateWithSub = subHours(appointment.date, 2);
 
     if (isBefore(dateWithSub, new Date())) {
       return res.status(401).json({
@@ -150,18 +156,21 @@ class AppointmentController {
       });
     }
 
-    appointments.canceled_at = new Date();
+    appointment.canceled_at = new Date();
 
-    await appointments.save();
+    await appointment.save();
 
-    /*
     await Mail.sendMail({
-      to: `${appointments.provider.name} <${appointments.provider.email}>`,
+      to: `${appointment.provider.name} <${appointment.provider.email}>`,
       subject: 'Agendamento Cancelado',
-      text: 'Você tem um novo cancelamento',
+      text: `Você tem um novo cancelamento! Executado cancelamento da data ${format(
+        appointment.date,
+        'dd/MM/yyyy H:mm:ss',
+        { locale: pt }
+      )}`,
     });
-    */
-    return res.json(appointments);
+
+    return res.json(appointment);
   }
 }
 
