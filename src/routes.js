@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import multer from 'multer';
 import AppointmentController from './app/controllers/AppointmentController';
+import AvailableController from './app/controllers/AvailableController';
 import FileController from './app/controllers/FileController';
 import NotificationController from './app/controllers/NotificationController';
 import ProviderController from './app/controllers/ProviderController';
@@ -39,5 +40,7 @@ routes.get('/schedules', authMiddleware, ScheduleController.index);
 
 routes.get('/notifications', authMiddleware, NotificationController.index);
 routes.put('/notifications/:id', authMiddleware, NotificationController.update);
+
+routes.get('/providers/:provider_id/available', AvailableController.index);
 
 export default routes;
