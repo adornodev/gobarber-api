@@ -1,7 +1,10 @@
 import { Router } from 'express';
 import multer from 'multer';
+import AppointmentController from './app/controllers/AppointmentController';
 import FileController from './app/controllers/FileController';
+import NotificationController from './app/controllers/NotificationController';
 import ProviderController from './app/controllers/ProviderController';
+import ScheduleController from './app/controllers/ScheduleController';
 import SessionController from './app/controllers/SessionController';
 import UserController from './app/controllers/UserController';
 import authMiddleware from './app/middlewares/auth';
@@ -23,4 +26,18 @@ routes.post(
 );
 
 routes.get('/providers', authMiddleware, ProviderController.index);
+
+routes.post('/appointments', authMiddleware, AppointmentController.store);
+routes.get('/appointments', authMiddleware, AppointmentController.index);
+routes.delete(
+  '/appointments/:id',
+  authMiddleware,
+  AppointmentController.delete
+);
+
+routes.get('/schedules', authMiddleware, ScheduleController.index);
+
+routes.get('/notification', authMiddleware, NotificationController.index);
+routes.put('/notification/:id', authMiddleware, NotificationController.update);
+
 export default routes;
